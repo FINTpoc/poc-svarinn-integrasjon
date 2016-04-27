@@ -93,5 +93,13 @@ public class Metadata {
 	public void setTittel(String tittel) {
 		this.tittel = tittel;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Metadata [sakssekvensnummer=" + sakssekvensnummer + ", saksaar=" + saksaar + ", journalaar="
+				+ journalaar + ", journalsekvensnummer=" + journalsekvensnummer + ", journalpostnummer="
+				+ journalpostnummer + ", journalposttype=" + journalposttype + ", journalstatus=" + journalstatus
+				+ ", journaldato=" + journaldato + ", dokumentetsDato=" + dokumentetsDato + ", tittel=" + tittel + "]";
+	}
+
 }

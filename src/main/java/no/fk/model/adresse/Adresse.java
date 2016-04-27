@@ -56,4 +56,10 @@ public abstract class Adresse {
 		this.poststed = poststed;
 	}
 
+	@Override
+	public String toString() {
+		return "Adresse [adresselinje1=" + adresselinje1 + ", adresselinje2=" + adresselinje2 + ", adresselinje3="
+				+ adresselinje3 + ", navn=" + navn + ", postnr=" + postnr + ", poststed=" + poststed + "]";
+	}
+
 }

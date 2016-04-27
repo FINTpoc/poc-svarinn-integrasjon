@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:spring="http://www.springframework.org/schema/beans" version="CE-3.7.0"
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:jetty-ssl="http://www.mulesoft.org/schema/mule/jetty-ssl" xmlns:jetty="http://www.mulesoft.org/schema/mule/jetty" xmlns:quartz="http://www.mulesoft.org/schema/mule/quartz" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
-http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd"></mule>
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/quartz http://www.mulesoft.org/schema/mule/quartz/current/mule-quartz.xsd
+http://www.mulesoft.org/schema/mule/jetty http://www.mulesoft.org/schema/mule/jetty/current/mule-jetty.xsd
+http://www.mulesoft.org/schema/mule/jetty-ssl http://www.mulesoft.org/schema/mule/jetty-ssl/current/mule-jetty-ssl.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+    <jetty-ssl:endpoint exchange-pattern="request-response" address="https://test.svarut.ks.no/tjenester/svarinn/mottaker/hentNyeForsendelser" name="Jetty-svarut-hentForsendelse" encoding="UTF-8" mimeType="application/json" user="ab0bcc18-136a-4568-8c32-eebf80508a39" password="xFvGIFPIU2tbLw6Z5MNg{#^^S1U2N@eAbH7#~nx}}WSNi7DFZf" contentType="application/json" doc:name="Jetty"/>
+    <http:request-config name="HTTPS_svarut" protocol="HTTPS" host="test.svarut.ks.no" port="443" doc:name="HTTP Request Configuration"/>
+    <flow name="svarinn-integrasjon">
+        <poll doc:name="Poll">
+            <fixed-frequency-scheduler frequency="5000"/>
+            <http:request config-ref="HTTPS_svarut" path="/tjenester/svarinn/mottaker/hentNyeForsendelser" method="GET" doc:name="HTTP">
+                <http:request-builder>
+                    <http:header headerName="Authorization" value=""/>
+                </http:request-builder>
+            </http:request>
+        </poll>
+        <byte-array-to-string-transformer doc:name="Byte Array to String"/>
+        <component class="no.fk.transformer.ForsendelseTransformer" doc:name="JSON to Forsendelse"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    </flow>
+</mule>

@@ -128,8 +128,7 @@ public class Forsendelse {
 		return metadataFraAvleverendeSystem;
 	}
 
-	public void setMetadataFraAvleverendeSystem(
-			MetadataFraAvleverendeSystem metadataFraAvleverendeSystem) {
+	public void setMetadataFraAvleverendeSystem(MetadataFraAvleverendeSystem metadataFraAvleverendeSystem) {
 		this.metadataFraAvleverendeSystem = metadataFraAvleverendeSystem;
 	}
 
@@ -152,4 +151,15 @@ public class Forsendelse {
 	public void addFilmetadata(Filmetadata filmetadata) {
 		this.filmetadata.add(filmetadata);
 	}
+
+	@Override
+	public String toString() {
+		return "Forsendelse [avsender=" + avsender + ", mottaker=" + mottaker + ", svarSendestil=" + svarSendestil
+				+ ", id=" + id + ", svarPaForsendelse=" + svarPaForsendelse + ", eksternRef=" + eksternRef
+				+ ", forsendelseType=" + forsendelseType + ", tittel=" + tittel + ", date=" + date + ", downloadUrl="
+				+ downloadUrl + ", niva=" + niva + ", status=" + status + ", metadataFraAvleverendeSystem="
+				+ metadataFraAvleverendeSystem + ", metadataForImport=" + metadataForImport + ", filmetadata="
+				+ filmetadata + "]";
+	}
+
 }

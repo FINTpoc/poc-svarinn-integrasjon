@@ -20,4 +20,9 @@ public class Mottaker extends Adresse {
 		this.orgnr = orgnr;
 	}
 
+	@Override
+	public String toString() {
+		return "Mottaker [land=" + land + ", orgnr=" + orgnr + "]";
+	}
+
 }

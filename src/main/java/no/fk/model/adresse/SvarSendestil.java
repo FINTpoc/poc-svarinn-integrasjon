@@ -29,4 +29,9 @@ public class SvarSendestil extends Adresse {
 		this.fnr = fnr;
 	}
 
+	@Override
+	public String toString() {
+		return "SvarSendestil [land=" + land + ", orgnr=" + orgnr + ", fnr=" + fnr + "]";
+	}
+
 }
