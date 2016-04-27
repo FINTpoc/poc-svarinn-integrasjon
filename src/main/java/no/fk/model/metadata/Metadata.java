@@ -93,5 +93,4 @@ public class Metadata {
 	public void setTittel(String tittel) {
 		this.tittel = tittel;
 	}
-
 }
