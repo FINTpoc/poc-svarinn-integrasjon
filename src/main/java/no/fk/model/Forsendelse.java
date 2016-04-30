@@ -5,7 +5,7 @@ import java.util.List;
 
 import no.fk.model.adresse.Avsender;
 import no.fk.model.adresse.Mottaker;
-import no.fk.model.metadata.SvarSendesTil;
+import no.fk.model.adresse.SvarSendesTil;
 import no.fk.model.metadata.MetadataForImport;
 import no.fk.model.metadata.MetadataFraAvleverendeSystem;
 

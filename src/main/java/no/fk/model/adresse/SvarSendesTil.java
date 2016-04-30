@@ -1,4 +1,4 @@
-package no.fk.model.metadata;
+package no.fk.model.adresse;
 
 import no.fk.model.adresse.Adresse;
 
