@@ -2,9 +2,14 @@
 
 [![Build Status](https://travis-ci.org/FINTprosjektet/svarinn-integrasjon.svg?branch=master)](https://travis-ci.org/FINTprosjektet/svarinn-integrasjon)
 
+Bygg zip-fil
+```
+mvn clean package
+```
+
 Integrasjonstester
 ```
-mvn failsafe:integrat-test
+mvn failsafe:integration-test
 ```
 
 ## Svarut dokumentasjon
