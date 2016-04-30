@@ -10,11 +10,26 @@ http://www.mulesoft.org/schema/mule/jetty http://www.mulesoft.org/schema/mule/je
 http://www.mulesoft.org/schema/mule/jetty-ssl http://www.mulesoft.org/schema/mule/jetty-ssl/current/mule-jetty-ssl.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
-    <http:request-config name="HTTPS_svarut" protocol="HTTPS" host="test.svarut.ks.no" port="443" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="HTTPS_svarut" protocol="HTTPS" host="test.svarut.ks.no" port="443" doc:name="HTTP Request Configuration" basePath="/tjenester"/>
+    <sub-flow name="svarinn-forsendelsefil">
+        <http:request config-ref="HTTPS_svarut" path="svarinn/forsendelse/{forsendelseId}" method="GET" doc:name="hentForsendelsefil">
+            <http:request-builder>
+                <http:uri-param paramName="forsendelseId" value="#[payload[0].id]"/>
+                <http:header headerName="Authorization" value="${authorization}"/>
+            </http:request-builder>
+        </http:request>
+        <logger level="INFO" doc:name="Logger" message="ForsendelseId: #[flowVars['forsendelseId']]"/>
+        <http:request config-ref="HTTPS_svarut" path="/svarinn/kvitterMottak/forsendelse/{forsendelseId}" method="POST" doc:name="settForsendelseMottatt">
+            <http:request-builder>
+                <http:query-param paramName="forsendelseId" value="#[flowVars['forsendelseId']]"/>
+                <http:header headerName="Authorization" value="${authorization}"/>
+            </http:request-builder>
+        </http:request>
+    </sub-flow>
     <flow name="svarinn-integrasjon">
         <poll doc:name="Poll">
             <fixed-frequency-scheduler frequency="5000"/>
-            <http:request config-ref="HTTPS_svarut" path="/tjenester/svarinn/mottaker/hentNyeForsendelser" method="GET" doc:name="HTTP">
+            <http:request config-ref="HTTPS_svarut" path="/svarinn/mottaker/hentNyeForsendelser" method="GET" doc:name="hentNyeForsendelser">
                 <http:request-builder>
                     <http:header headerName="Authorization" value="${authorization}"/>
                 </http:request-builder>
@@ -25,6 +40,8 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
         <choice doc:name="Choice">
             <when expression="#[payload.length &gt; 0]">
                 <logger message="Message id: #[payload[0].id]" level="INFO" doc:name="Logger"/>
+                <set-variable variableName="forsendelseId" value="#[payload[0].id]" doc:name="Set forsendelseId"/>
+                <flow-ref name="svarinn-forsendelsefil" doc:name="svarinn-hentForsendelsefil"/>
             </when>
             <otherwise>
                 <logger message="No documents waiting" level="INFO" doc:name="Logger"/>
