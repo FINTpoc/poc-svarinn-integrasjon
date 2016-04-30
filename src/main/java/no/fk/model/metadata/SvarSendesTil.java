@@ -1,4 +1,6 @@
-package no.fk.model.adresse;
+package no.fk.model.metadata;
+
+import no.fk.model.adresse.Adresse;
 
 public class SvarSendesTil extends Adresse {
 	private String land;
