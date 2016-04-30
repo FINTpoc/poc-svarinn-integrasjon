@@ -5,14 +5,14 @@ import java.util.List;
 
 import no.fk.model.adresse.Avsender;
 import no.fk.model.adresse.Mottaker;
-import no.fk.model.adresse.SvarSendestil;
+import no.fk.model.adresse.SvarSendesTil;
 import no.fk.model.metadata.MetadataForImport;
 import no.fk.model.metadata.MetadataFraAvleverendeSystem;
 
 public class Forsendelse {
 	private Avsender avsender;
 	private Mottaker mottaker;
-	private SvarSendestil svarSendestil;
+	private SvarSendesTil svarSendesTil;
 
 	private String id;
 	private String svarPaForsendelse;
@@ -44,12 +44,12 @@ public class Forsendelse {
 		this.mottaker = mottaker;
 	}
 
-	public SvarSendestil getSvarSendestil() {
-		return svarSendestil;
+	public SvarSendesTil getSvarSendesTil() {
+		return svarSendesTil;
 	}
 
-	public void setSvarSendestil(SvarSendestil svarSendestil) {
-		this.svarSendestil = svarSendestil;
+	public void setSvarSendesTil(SvarSendesTil svarSendesTil) {
+		this.svarSendesTil = svarSendesTil;
 	}
 
 	public String getId() {
@@ -154,7 +154,7 @@ public class Forsendelse {
 
 	@Override
 	public String toString() {
-		return "Forsendelse [avsender=" + avsender + ", mottaker=" + mottaker + ", svarSendestil=" + svarSendestil
+		return "Forsendelse [avsender=" + avsender + ", mottaker=" + mottaker + ", svarSendesTil=" + svarSendesTil
 				+ ", id=" + id + ", svarPaForsendelse=" + svarPaForsendelse + ", eksternRef=" + eksternRef
 				+ ", forsendelseType=" + forsendelseType + ", tittel=" + tittel + ", date=" + date + ", downloadUrl="
 				+ downloadUrl + ", niva=" + niva + ", status=" + status + ", metadataFraAvleverendeSystem="

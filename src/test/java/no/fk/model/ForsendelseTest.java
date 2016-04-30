@@ -2,7 +2,7 @@ package no.fk.model;
 
 import no.fk.model.adresse.Avsender;
 import no.fk.model.adresse.Mottaker;
-import no.fk.model.adresse.SvarSendestil;
+import no.fk.model.adresse.SvarSendesTil;
 import no.fk.model.metadata.MetadataForImport;
 import no.fk.model.metadata.MetadataFraAvleverendeSystem;
 
@@ -39,9 +39,9 @@ public class ForsendelseTest {
 		forsendelse.setAvsender(avsender);
 
 		Mottaker mottaker = new Mottaker();
-		mottaker.setAdresselinje1("Forste adresselinje");
-		mottaker.setAdresselinje2("Andre adresselinje");
-		mottaker.setAdresselinje3(null);
+		mottaker.setAdresse1("Forste adresselinje");
+		mottaker.setAdresse2("Andre adresselinje");
+		mottaker.setAdresse3(null);
 		mottaker.setPostnr("5258");
 		mottaker.setPoststed("Blomsterdalen");
 		mottaker.setNavn("Orgnavn");
@@ -49,16 +49,16 @@ public class ForsendelseTest {
 		mottaker.setOrgnr("999888777");
 		forsendelse.setMottaker(mottaker);
 
-		SvarSendestil svarSendestil = new SvarSendestil();
-		svarSendestil.setAdresselinje1("Forste adresselinje");
-		svarSendestil.setAdresselinje2("Andre adresselinje");
-		svarSendestil.setAdresselinje3(null);
-		svarSendestil.setPostnr("5258");
-		svarSendestil.setPoststed("Blomsterdalen");
-		svarSendestil.setNavn("Orgnavn");
-		svarSendestil.setLand("Norge");
-		svarSendestil.setOrgnr("999888777");
-		forsendelse.setSvarSendestil(svarSendestil);
+		SvarSendesTil svarSendesTil = new SvarSendesTil();
+		svarSendesTil.setAdresselinje1("Forste adresselinje");
+		svarSendesTil.setAdresselinje2("Andre adresselinje");
+		svarSendesTil.setAdresselinje3(null);
+		svarSendesTil.setPostnr("5258");
+		svarSendesTil.setPoststed("Blomsterdalen");
+		svarSendesTil.setNavn("Orgnavn");
+		svarSendesTil.setLand("Norge");
+		svarSendesTil.setOrgnr("999888777");
+		forsendelse.setSvarSendesTil(svarSendesTil);
 
 		MetadataFraAvleverendeSystem metadataFraAvleverendeSystem = new MetadataFraAvleverendeSystem();
 		metadataFraAvleverendeSystem.setSakssekvensnummer(0);
@@ -90,7 +90,7 @@ public class ForsendelseTest {
 		filmetadata.setFilnavn("dokument-d1c6d795.pdf");
 		filmetadata.setMimetype("application/pdf");
 		forsendelse.addFilmetadata(filmetadata);
-		
+
 		String json = new ObjectMapper().writeValueAsString(forsendelse);
 
 		assertNotNull(json);

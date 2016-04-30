@@ -1,6 +1,6 @@
 package no.fk.model.adresse;
 
-public class SvarSendestil extends Adresse {
+public class SvarSendesTil extends Adresse {
 	private String land;
 	private String orgnr;
 	private String fnr;

@@ -10,19 +10,25 @@ http://www.mulesoft.org/schema/mule/jetty http://www.mulesoft.org/schema/mule/je
 http://www.mulesoft.org/schema/mule/jetty-ssl http://www.mulesoft.org/schema/mule/jetty-ssl/current/mule-jetty-ssl.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
-    <jetty-ssl:endpoint exchange-pattern="request-response" address="https://test.svarut.ks.no/tjenester/svarinn/mottaker/hentNyeForsendelser" name="Jetty-svarut-hentForsendelse" encoding="UTF-8" mimeType="application/json" user="ab0bcc18-136a-4568-8c32-eebf80508a39" password="xFvGIFPIU2tbLw6Z5MNg{#^^S1U2N@eAbH7#~nx}}WSNi7DFZf" contentType="application/json" doc:name="Jetty"/>
     <http:request-config name="HTTPS_svarut" protocol="HTTPS" host="test.svarut.ks.no" port="443" doc:name="HTTP Request Configuration"/>
     <flow name="svarinn-integrasjon">
         <poll doc:name="Poll">
             <fixed-frequency-scheduler frequency="5000"/>
             <http:request config-ref="HTTPS_svarut" path="/tjenester/svarinn/mottaker/hentNyeForsendelser" method="GET" doc:name="HTTP">
                 <http:request-builder>
-                    <http:header headerName="Authorization" value=""/>
+                    <http:header headerName="Authorization" value="${authorization}"/>
                 </http:request-builder>
             </http:request>
         </poll>
         <byte-array-to-string-transformer doc:name="Byte Array to String"/>
-        <component class="no.fk.transformer.ForsendelseTransformer" doc:name="JSON to Forsendelse"/>
-        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <json:json-to-object-transformer returnClass="no.fk.model.Forsendelse[]" doc:name="JSON to Forsendelse"/>
+        <choice doc:name="Choice">
+            <when expression="#[payload.length &gt; 0]">
+                <logger message="Message id: #[payload[0].id]" level="INFO" doc:name="Logger"/>
+            </when>
+            <otherwise>
+                <logger message="No documents waiting" level="INFO" doc:name="Logger"/>
+            </otherwise>
+        </choice>
     </flow>
 </mule>

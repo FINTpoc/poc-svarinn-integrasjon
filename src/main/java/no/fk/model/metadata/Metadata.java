@@ -1,6 +1,7 @@
 package no.fk.model.metadata;
 
 import java.util.Date;
+import java.util.List;
 
 public class Metadata {
 	private long sakssekvensnummer;
@@ -13,6 +14,8 @@ public class Metadata {
 	private Date journaldato;
 	private Date dokumentetsDato;
 	private String tittel;
+	private String saksBehandler;
+	private List<String> ekstraMetadata;
 
 	public long getSakssekvensnummer() {
 		return sakssekvensnummer;
@@ -94,12 +97,29 @@ public class Metadata {
 		this.tittel = tittel;
 	}
 
+	public String getSaksBehandler() {
+		return saksBehandler;
+	}
+
+	public void setSaksBehandler(String saksBehandler) {
+		this.saksBehandler = saksBehandler;
+	}
+
+	public List<String> getEkstraMetadata() {
+		return ekstraMetadata;
+	}
+
+	public void setEkstraMetadata(List<String> ekstraMetadata) {
+		this.ekstraMetadata = ekstraMetadata;
+	}
+
 	@Override
 	public String toString() {
 		return "Metadata [sakssekvensnummer=" + sakssekvensnummer + ", saksaar=" + saksaar + ", journalaar="
 				+ journalaar + ", journalsekvensnummer=" + journalsekvensnummer + ", journalpostnummer="
 				+ journalpostnummer + ", journalposttype=" + journalposttype + ", journalstatus=" + journalstatus
-				+ ", journaldato=" + journaldato + ", dokumentetsDato=" + dokumentetsDato + ", tittel=" + tittel + "]";
+				+ ", journaldato=" + journaldato + ", dokumentetsDato=" + dokumentetsDato + ", tittel=" + tittel
+				+ ", saksBehandler=" + saksBehandler + ", ekstraMetadata=" + ekstraMetadata + "]";
 	}
 
 }
