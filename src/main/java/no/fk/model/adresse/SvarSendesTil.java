@@ -33,7 +33,7 @@ public class SvarSendesTil extends Adresse {
 
 	@Override
 	public String toString() {
-		return "SvarSendestil [land=" + land + ", orgnr=" + orgnr + ", fnr=" + fnr + "]";
+		return "SvarSendesTil [land=" + land + ", orgnr=" + orgnr + ", fnr=" + fnr + "]";
 	}
 
 }

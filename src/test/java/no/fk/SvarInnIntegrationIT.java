@@ -11,18 +11,27 @@ import static org.junit.Assert.assertEquals;
 
 public class SvarInnIntegrationIT extends FunctionalMunitSuite {
 
+    @Test
+    public void noNewShipments() throws Exception {
+        runFlow(Flows.SVARINN, testEvent("[]".getBytes()));
+        verifyCallOfMessageProcessor("request").ofNamespace("http").times(0);
+    }
 
     @Test
-    public void forsendelse() throws Exception {
-        Forsendelse forsendelse = new Forsendelse();
-        forsendelse.setId("abc123");
-        String content = new ObjectMapper().writeValueAsString(Lists.newArrayList(forsendelse));
+    public void newShipment() throws Exception {
+        Forsendelse forsendelse1 = new Forsendelse();
+        forsendelse1.setId("123");
+
+        Forsendelse forsendelse2 = new Forsendelse();
+        forsendelse2.setId("234");
+
+        String content = new ObjectMapper().writeValueAsString(Lists.newArrayList(forsendelse1, forsendelse2));
         whenMessageProcessor("request").ofNamespace("http").thenReturn(muleMessageWithPayload("test"));
 
         MuleEvent muleEvent = runFlow(Flows.SVARINN, testEvent(content.getBytes()));
 
-        verifyCallOfMessageProcessor("request").ofNamespace("http").times(2);
-        assertEquals("test", muleEvent.getMessage().getPayloadAsString());
+        verifyCallOfMessageProcessor("request").ofNamespace("http").times(4);
+        assertEquals(2, muleEvent.getMessage().getPayload(Forsendelse[].class).length);
     }
 
 
