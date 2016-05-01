@@ -19,10 +19,14 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
             </http:request-builder>
         </http:request>
         <logger level="INFO" doc:name="Logger" message="ForsendelseId: #[flowVars['forsendelse'].id]"/>
+        <byte-array-to-string-transformer doc:name="Byte Array to String"/>
+        <custom-transformer class="no.fk.transformer.BluegardenImportTransformer" doc:name="Create ImportDocument"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <component class="no.fint.mule.ImportDocumentComponent" doc:name="Bluegarden ImportDocument"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         <http:request config-ref="HTTPS_svarut" path="/svarinn/kvitterMottak/forsendelse/{forsendelseId}" method="POST" doc:name="settForsendelseMottatt">
             <http:request-builder>
-                <http:query-param paramName="forsendelseId" value="#[flowVars['forsendelse'].id]"/>
-                <http:header headerName="WWW-Authenticate" value="${authorization}"/>
+                <http:uri-param paramName="forsendelseId" value="#[flowVars['forsendelse'].id]"/>
                 <http:header headerName="Authorization" value="${authorization}"/>
             </http:request-builder>
         </http:request>
