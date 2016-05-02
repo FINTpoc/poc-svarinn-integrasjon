@@ -11,26 +11,6 @@ http://www.mulesoft.org/schema/mule/jetty-ssl http://www.mulesoft.org/schema/mul
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
     <http:request-config name="HTTPS_svarut" protocol="HTTPS" host="test.svarut.ks.no" port="443" doc:name="HTTP Request Configuration" basePath="/tjenester"/>
-    <sub-flow name="svarinn-forsendelsefil">
-        <http:request config-ref="HTTPS_svarut" path="/svarinn/forsendelse/{forsendelseId}" method="GET" doc:name="hentForsendelsefil">
-            <http:request-builder>
-                <http:uri-param paramName="forsendelseId" value="#[flowVars['forsendelse'].id]"/>
-                <http:header headerName="Authorization" value="${authorization}"/>
-            </http:request-builder>
-        </http:request>
-        <logger level="INFO" doc:name="Logger" message="ForsendelseId: #[flowVars['forsendelse'].id]"/>
-        <byte-array-to-string-transformer doc:name="Byte Array to String"/>
-        <custom-transformer class="no.fk.transformer.BluegardenImportTransformer" doc:name="Create ImportDocument"/>
-        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-        <component class="no.fint.mule.ImportDocumentComponent" doc:name="Bluegarden ImportDocument"/>
-        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-        <http:request config-ref="HTTPS_svarut" path="/svarinn/kvitterMottak/forsendelse/{forsendelseId}" method="POST" doc:name="settForsendelseMottatt">
-            <http:request-builder>
-                <http:uri-param paramName="forsendelseId" value="#[flowVars['forsendelse'].id]"/>
-                <http:header headerName="Authorization" value="${authorization}"/>
-            </http:request-builder>
-        </http:request>
-    </sub-flow>
     <flow name="svarinn-integrasjon">
         <poll doc:name="Poll">
             <fixed-frequency-scheduler frequency="5000"/>
@@ -55,4 +35,24 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
             </otherwise>
         </choice>
     </flow>
+    <sub-flow name="svarinn-forsendelsefil">
+        <http:request config-ref="HTTPS_svarut" path="/svarinn/forsendelse/{forsendelseId}" method="GET" doc:name="hentForsendelsefil">
+            <http:request-builder>
+                <http:uri-param paramName="forsendelseId" value="#[flowVars['forsendelse'].id]"/>
+                <http:header headerName="Authorization" value="${authorization}"/>
+            </http:request-builder>
+        </http:request>
+        <logger message="ForsendelseId: #[flowVars['forsendelse'].id]" level="INFO" doc:name="Logger"/>
+        <byte-array-to-string-transformer doc:name="Byte Array to String"/>
+        <custom-transformer class="no.fk.transformer.BluegardenImportTransformer" doc:name="Create ImportDocument"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <component class="no.fint.mule.ImportDocumentComponent" doc:name="Bluegarden ImportDocument"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <http:request config-ref="HTTPS_svarut" path="/svarinn/kvitterMottak/forsendelse/{forsendelseId}" method="POST" doc:name="settForsendelseMottatt">
+            <http:request-builder>
+                <http:uri-param paramName="forsendelseId" value="#[flowVars['forsendelse'].id]"/>
+                <http:header headerName="Authorization" value="${authorization}"/>
+            </http:request-builder>
+        </http:request>
+    </sub-flow>
 </mule>
